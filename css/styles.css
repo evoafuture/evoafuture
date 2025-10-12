@@ -38,7 +38,19 @@ body {
     margin: 0 auto;
 }
 
-.nav-logo h2 {
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-text {
     color: #2563eb;
     font-weight: 700;
     font-size: 1.8rem;
@@ -819,6 +831,14 @@ section.section-gradient {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .logo-img {
+        height: 40px;
+    }
+    
+    .logo-text {
+        font-size: 1.4rem;
+    }
+    
     .hamburger {
         display: flex;
     }
