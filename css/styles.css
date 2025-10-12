@@ -385,6 +385,33 @@ section.section-gradient {
     color: white;
 }
 
+/* Program Image Styles */
+.program-image {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.program-image:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.program-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.program-image:hover .program-img {
+    transform: scale(1.05);
+}
+
 .section-card h3 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -995,6 +1022,11 @@ section.section-gradient {
     .hero-buttons {
         flex-direction: column;
         align-items: center;
+    }
+    
+    .program-image {
+        height: 160px;
+        margin-bottom: 15px;
     }
 
     .section-header h2 {
