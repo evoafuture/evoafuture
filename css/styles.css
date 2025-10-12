@@ -1356,22 +1356,33 @@ html {
 
 /* Donate Section Styles */
 
-.donate-content {
-    max-width: 600px;
+/* Full-width donation form layout */
+.donate-content-full {
+    max-width: 800px;
     margin: 0 auto;
 }
 
-
-
-.donate-form-section {
+.donate-form-full {
     background: white;
     border-radius: 20px;
+    padding: 50px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
 }
 
-.donate-form-container {
-    padding: 40px;
+.donate-form-full h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.donate-form-full > p {
+    color: #6b7280;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    text-align: center;
+    font-size: 1.1rem;
 }
 
 .donate-form-container h3 {
@@ -1695,9 +1706,13 @@ html {
     }
 
     /* Donate section responsive */
-    .donate-content {
+    .donate-content-full {
         max-width: 100%;
         padding: 0 20px;
+    }
+    
+    .donate-form-full {
+        padding: 30px 20px;
     }
     
     .form-row {
