@@ -187,11 +187,25 @@ body {
     text-align: center;
 }
 
-/* Section Styles */
+/* Unified Section Styles */
 section {
-    padding: 80px 0;
+    padding: 100px 0;
 }
 
+/* Section Background Variations */
+section.section-light {
+    background: #ffffff;
+}
+
+section.section-gray {
+    background: #f8fafc;
+}
+
+section.section-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+/* Unified Section Header Styles */
 .section-header {
     text-align: center;
     margin-bottom: 60px;
@@ -207,14 +221,110 @@ section {
 .section-header p {
     font-size: 1.2rem;
     color: #6b7280;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Section Header Variations */
+.section-header.header-left {
+    text-align: left;
+    max-width: none;
+}
+
+.section-header.header-compact {
+    margin-bottom: 40px;
+}
+
+.section-header.header-compact h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-header.header-compact p {
+    font-size: 1.1rem;
+}
+
+/* Unified Grid System */
+.section-grid {
+    display: grid;
+    gap: 30px;
+}
+
+.section-grid.grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.section-grid.grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.section-grid.grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Unified Card Styles */
+.section-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.section-card .card-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    color: white;
+}
+
+.section-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.section-card h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2563eb;
+    margin-bottom: 15px;
+    text-align: center;
+    font-style: italic;
+}
+
+.section-card p {
+    color: #6b7280;
+    line-height: 1.7;
+    flex: 1;
+    text-align: center;
+}
+
+.section-card .card-actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
 }
 
 /* Programs Section */
-.programs {
-    background: #f8fafc;
-}
 
 .programs-grid {
     display: grid;
@@ -388,9 +498,6 @@ section {
 }
 
 /* Past Events Section */
-.past-events {
-    background: #f8fafc;
-}
 
 .past-events-grid {
     display: grid;
@@ -479,9 +586,6 @@ section {
 }
 
 /* Contact Section */
-.contact {
-    background: white;
-}
 
 .contact-content {
     display: grid;
@@ -1251,99 +1355,13 @@ html {
 }
 
 /* Donate Section Styles */
-.donate {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    padding: 100px 0;
-}
 
 .donate-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.donate-impact {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
 
-.impact-story h3 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 20px;
-}
-
-.impact-story > p {
-    font-size: 1.1rem;
-    color: #6b7280;
-    line-height: 1.7;
-    margin-bottom: 30px;
-}
-
-.impact-examples {
-    margin: 40px 0;
-}
-
-.impact-item {
-    display: flex;
-    gap: 20px;
-    padding: 25px;
-    margin-bottom: 20px;
-    background: #f8fafc;
-    border-radius: 15px;
-    border-left: 5px solid #2563eb;
-    transition: all 0.3s ease;
-}
-
-.impact-item:hover {
-    background: #f1f5f9;
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
-}
-
-.impact-amount {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2563eb;
-    min-width: 80px;
-    text-align: center;
-}
-
-.impact-description h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 8px;
-}
-
-.impact-description p {
-    color: #6b7280;
-    line-height: 1.6;
-}
-
-.testimonial-quote {
-    margin-top: 40px;
-    padding: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    color: white;
-}
-
-.testimonial-quote blockquote {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 15px;
-    font-style: italic;
-}
-
-.testimonial-quote cite {
-    font-weight: 600;
-    font-size: 0.9rem;
-}
 
 .donate-form-section {
     background: white;
@@ -1678,8 +1696,8 @@ html {
 
     /* Donate section responsive */
     .donate-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
+        max-width: 100%;
+        padding: 0 20px;
     }
     
     .form-row {
