@@ -438,4 +438,272 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = printStyles;
 document.head.appendChild(styleSheet);
 
-console.log('EvoaFuture website loaded successfully!');
+// Donation System with Square Integration
+let selectedAmount = 0;
+let donationFrequency = 'one-time';
+let squareProcessor = null;
+
+// Initialize Square Payment Form
+async function initializeSquarePayment() {
+    if (window.SquareDonationProcessor) {
+        squareProcessor = new SquareDonationProcessor();
+        await squareProcessor.initialize();
+    } else {
+        console.error('Square donation processor not available');
+        showAlternativePaymentMethods();
+    }
+}
+
+// Show alternative payment methods if Square fails to load
+function showAlternativePaymentMethods() {
+    if (squareProcessor) {
+        squareProcessor.showFallbackPayment();
+    }
+}
+
+// Donation amount selection
+document.addEventListener('DOMContentLoaded', function() {
+    const amountButtons = document.querySelectorAll('.amount-btn');
+    const customAmountInput = document.querySelector('.custom-amount-input');
+    const customDonationInput = document.getElementById('custom-donation');
+    const displayAmount = document.getElementById('display-amount');
+    const donateButton = document.getElementById('donate-button');
+    const donateBtnText = document.getElementById('donate-btn-text');
+
+    // Handle amount button clicks
+    amountButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            amountButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const amount = this.getAttribute('data-amount');
+            
+            if (amount === 'custom') {
+                customAmountInput.style.display = 'block';
+                selectedAmount = 0;
+                displayAmount.textContent = '$0';
+                updateDonateButton();
+            } else {
+                customAmountInput.style.display = 'none';
+                selectedAmount = parseInt(amount);
+                displayAmount.textContent = `$${selectedAmount}`;
+                updateDonateButton();
+            }
+        });
+    });
+
+    // Handle custom amount input
+    customDonationInput.addEventListener('input', function() {
+        const customAmount = parseFloat(this.value);
+        if (customAmount && customAmount >= 5) {
+            selectedAmount = customAmount;
+            displayAmount.textContent = `$${selectedAmount}`;
+        } else {
+            selectedAmount = 0;
+            displayAmount.textContent = '$0';
+        }
+        updateDonateButton();
+    });
+
+    // Handle donation frequency selection
+    const frequencyOptions = document.querySelectorAll('input[name="frequency"]');
+    frequencyOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            donationFrequency = this.value;
+            updateDonateButton();
+        });
+    });
+
+    // Update donate button text based on selection
+    function updateDonateButton() {
+        if (selectedAmount > 0) {
+            let buttonText = `Donate $${selectedAmount}`;
+            if (donationFrequency === 'monthly') {
+                buttonText += '/month';
+            } else if (donationFrequency === 'yearly') {
+                buttonText += '/year';
+            }
+            donateBtnText.textContent = buttonText;
+            donateButton.disabled = false;
+        } else {
+            donateBtnText.textContent = 'Select Amount';
+            donateButton.disabled = true;
+        }
+    }
+
+    // Initialize Square payment form
+    initializeSquarePayment();
+});
+
+// Handle donation form submission
+document.getElementById('payment-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    if (selectedAmount <= 0) {
+        showNotification('Please select a donation amount.', 'error');
+        return;
+    }
+
+    const donateButton = document.getElementById('donate-button');
+    const originalText = donateButton.innerHTML;
+    
+    // Show loading state
+    donateButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    donateButton.disabled = true;
+
+    try {
+        // Get form data
+        const donorName = document.getElementById('donor-name').value;
+        const donorEmail = document.getElementById('donor-email').value;
+        const isAnonymous = document.getElementById('anonymous-donation').checked;
+        const subscribeNewsletter = document.getElementById('newsletter-signup').checked;
+
+        // Process donation using Square
+        if (squareProcessor && squareProcessor.isInitialized) {
+            // Validate donation amount
+            const validation = squareProcessor.validateAmount(selectedAmount);
+            if (!validation.valid) {
+                showNotification(validation.message, 'error');
+                return;
+            }
+
+            // Prepare donation data
+            const donationData = {
+                amount: selectedAmount,
+                frequency: donationFrequency,
+                donor: donorName,
+                email: donorEmail,
+                anonymous: isAnonymous,
+                newsletter: subscribeNewsletter
+            };
+
+            try {
+                // Process payment through Square
+                const result = await squareProcessor.processDonation(donationData);
+                
+                if (result.success) {
+                    // Show success message
+                    showDonationSuccess({
+                        amount: selectedAmount,
+                        frequency: donationFrequency,
+                        donor: donorName,
+                        anonymous: isAnonymous,
+                        transactionId: result.transactionId
+                    });
+                    
+                    // Reset form
+                    resetDonationForm();
+                } else {
+                    throw new Error(result.error || 'Payment processing failed');
+                }
+                
+            } catch (paymentError) {
+                console.error('Square payment error:', paymentError);
+                showNotification(paymentError.message || 'Payment failed. Please try again or use alternative payment methods.', 'error');
+            }
+            
+        } else {
+            // Fallback for when Square is not available
+            showNotification('Payment processing unavailable. Please use alternative payment methods below.', 'error');
+        }
+        
+    } catch (error) {
+        console.error('Payment error:', error);
+        showNotification('Payment failed. Please try again or use alternative payment methods.', 'error');
+    } finally {
+        // Reset button
+        donateButton.innerHTML = originalText;
+        donateButton.disabled = selectedAmount <= 0;
+    }
+});
+
+// Show donation success message
+function showDonationSuccess(donationData) {
+    const { amount, frequency, donor, anonymous, transactionId } = donationData;
+    
+    let message = `Thank you for your generous ${frequency} donation of $${amount}!`;
+    if (!anonymous) {
+        message = `Thank you, ${donor}, for your generous ${frequency} donation of $${amount}!`;
+    }
+    message += ' You will receive a tax receipt via email shortly.';
+    
+    if (transactionId) {
+        message += ` Transaction ID: ${transactionId}`;
+    }
+    
+    showDonationNotification(message, 'success', 10000);
+    
+    // Track donation (for analytics)
+    console.log('Donation completed:', donationData);
+}
+
+// Reset donation form
+function resetDonationForm() {
+    document.getElementById('payment-form').reset();
+    document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.custom-amount-input').style.display = 'none';
+    selectedAmount = 0;
+    donationFrequency = 'one-time';
+    document.getElementById('display-amount').textContent = '$0';
+    document.getElementById('donate-btn-text').textContent = 'Select Amount';
+    document.getElementById('donate-button').disabled = true;
+}
+
+// Enhanced notification system for donations
+function showDonationNotification(message, type = 'info', duration = 8000) {
+    const existingNotification = document.querySelector('.donation-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `donation-notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">
+                ${type === 'success' ? '💚' : type === 'error' ? '❌' : 'ℹ️'}
+            </span>
+            <span class="notification-message">${message}</span>
+            <button class="notification-close">&times;</button>
+        </div>
+    `;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        left: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        z-index: 3000;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateY(0)';
+    }, 100);
+    
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        removeNotification(notification);
+    });
+    
+    setTimeout(() => {
+        removeNotification(notification);
+    }, duration);
+}
+
+console.log('EvoAFuture website with donation system loaded successfully!');
