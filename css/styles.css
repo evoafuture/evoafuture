@@ -634,16 +634,25 @@ section.section-gradient {
     margin-top: 20px;
 }
 
+/* Event Actions Row - Side by Side Layout */
+.event-actions-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
 /* Calendar Button Styles */
 .calendar-actions {
     position: relative;
+    flex: 1;
 }
 
 .calendar-button {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 16px;
+    padding: 12px 16px;
     background: #f8f9fa;
     border: 2px solid #e9ecef;
     border-radius: 8px;
@@ -653,6 +662,7 @@ section.section-gradient {
     transition: all 0.3s ease;
     width: 100%;
     justify-content: center;
+    white-space: nowrap;
 }
 
 .calendar-button:hover {
@@ -1223,9 +1233,14 @@ section.section-gradient {
         gap: 10px;
     }
     
+    .event-actions-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
     .calendar-button {
         font-size: 0.9rem;
-        padding: 8px 12px;
+        padding: 10px 12px;
     }
     
     .event-image-container {
