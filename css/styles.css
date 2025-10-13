@@ -599,6 +599,73 @@ section.section-gradient {
     flex: 1;
 }
 
+/* New Event Date Line Styles */
+.event-date-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.event-date-line i {
+    font-size: 1rem;
+}
+
+.date-text {
+    font-size: 1rem;
+}
+
+/* Google Maps Styles */
+.map-card {
+    padding: 25px !important;
+}
+
+.map-container {
+    margin: 15px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.location-details {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.location-details p {
+    margin: 5px 0;
+    color: #374151;
+    line-height: 1.4;
+}
+
+.location-details strong {
+    color: #1f2937;
+}
+
+.directions-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.directions-link:hover {
+    color: #1d4ed8;
+}
+
 .event-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1027,6 +1094,14 @@ section.section-gradient {
     .program-image {
         height: 160px;
         margin-bottom: 15px;
+    }
+    
+    .map-container iframe {
+        height: 200px;
+    }
+    
+    .event-date-line {
+        font-size: 0.9rem;
     }
 
     .section-header h2 {
