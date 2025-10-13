@@ -706,4 +706,55 @@ function showDonationNotification(message, type = 'info', duration = 8000) {
     }, duration);
 }
 
+// Add to Calendar Functionality
+function addToCalendar(type) {
+    const eventDetails = {
+        title: 'Youth STEM Workshop - EvoAFuture Foundation',
+        description: 'Interactive workshop introducing young minds to robotics, coding, and scientific discovery. Perfect for ages 8-16.',
+        location: 'Campbell Community Center, 1 W. Campbell Ave, #C-31 Campbell, CA 95008',
+        startDate: '2025-11-15',
+        startTime: '14:00', // 2:00 PM in 24-hour format
+        endTime: '17:00'    // 5:00 PM in 24-hour format
+    };
+
+    if (type === 'google') {
+        // Google Calendar URL
+        const startDateTime = `${eventDetails.startDate}T${eventDetails.startTime}:00`;
+        const endDateTime = `${eventDetails.startDate}T${eventDetails.endTime}:00`;
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${startDateTime.replace(/[-:]/g, '')}/${endDateTime.replace(/[-:]/g, '')}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
+        window.open(googleUrl, '_blank');
+    } else if (type === 'ics') {
+        // ICS file for Outlook, Apple Calendar, etc.
+        const startDateTime = `${eventDetails.startDate}T${eventDetails.startTime}:00`;
+        const endDateTime = `${eventDetails.startDate}T${eventDetails.endTime}:00`;
+        
+        const icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//EvoAFuture Foundation//Event//EN',
+            'BEGIN:VEVENT',
+            'UID:' + Date.now() + '@evoafuture.org',
+            'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
+            'DTSTART:' + startDateTime.replace(/[-:]/g, ''),
+            'DTEND:' + endDateTime.replace(/[-:]/g, ''),
+            'SUMMARY:' + eventDetails.title,
+            'DESCRIPTION:' + eventDetails.description,
+            'LOCATION:' + eventDetails.location,
+            'END:VEVENT',
+            'END:VCALENDAR'
+        ].join('\r\n');
+
+        // Create and download the ICS file
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'youth-stem-workshop.ics';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('Calendar event downloaded! Check your Downloads folder.', 'success');
+    }
+}
+
 console.log('EvoAFuture website with donation system loaded successfully!');

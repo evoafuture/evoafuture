@@ -599,26 +599,138 @@ section.section-gradient {
     flex: 1;
 }
 
-/* New Event Date Line Styles */
-.event-date-line {
+/* New Event DateTime Styles */
+.event-datetime {
+    margin-bottom: 15px;
+}
+
+.datetime-line {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 10px;
+    font-weight: 600;
+    width: fit-content;
+    flex-wrap: wrap;
+}
+
+.datetime-line i {
+    font-size: 1rem;
+    margin-right: 5px;
+}
+
+.date-text, .time-text {
+    font-size: 1rem;
+}
+
+/* Event Actions Styles */
+.event-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Calendar Button Styles */
+.calendar-actions {
+    position: relative;
+}
+
+.calendar-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    color: #495057;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+}
+
+.calendar-button:hover {
+    background: #e9ecef;
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.calendar-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    margin-top: 5px;
+}
+
+.calendar-actions:hover .calendar-dropdown {
+    display: block;
+}
+
+.calendar-dropdown button {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    border-radius: 8px;
-    font-weight: 600;
-    width: fit-content;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    color: #495057;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
 }
 
-.event-date-line i {
-    font-size: 1rem;
+.calendar-dropdown button:hover {
+    background: #f8f9fa;
+    color: #2563eb;
 }
 
-.date-text {
-    font-size: 1rem;
+.calendar-dropdown button:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.calendar-dropdown button:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+/* Event Featured Image Styles */
+.event-image-container {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-image-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.event-featured-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.event-image-container:hover .event-featured-img {
+    transform: scale(1.05);
 }
 
 /* Google Maps Styles */
@@ -1100,8 +1212,25 @@ section.section-gradient {
         height: 200px;
     }
     
-    .event-date-line {
+    .datetime-line {
         font-size: 0.9rem;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    
+    .event-actions {
+        gap: 10px;
+    }
+    
+    .calendar-button {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+    
+    .event-image-container {
+        height: 160px;
+        margin-bottom: 15px;
     }
 
     .section-header h2 {

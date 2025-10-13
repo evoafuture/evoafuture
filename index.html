@@ -124,17 +124,39 @@
                 
                 <div class="section-grid grid-2">
                     <div class="section-card">
+                        <div class="event-image-container">
+                            <img src="img/event_stem_20251115.png" alt="Youth STEM Workshop - Nov 15, 2025" class="event-featured-img">
+                        </div>
                         <div class="event-info">
-                            <div class="event-date-line">
-                                <i class="fas fa-calendar"></i>
-                                <span class="date-text">Nov 15, 2025</span>
+                            <div class="event-datetime">
+                                <div class="datetime-line">
+                                    <i class="fas fa-calendar"></i>
+                                    <span class="date-text">Nov 15, 2025</span>
+                                    <i class="fas fa-clock"></i>
+                                    <span class="time-text">2:00 PM - 5:00 PM</span>
+                                </div>
                             </div>
                             <h3>Youth STEM Workshop</h3>
-                            <p class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 5:00 PM</p>
-                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> Campbell Community Center, 1 W. Campbell Ave, #C-31 Campbell, CA 95008</p>
                             <p>Interactive workshop introducing young minds to robotics, coding, and scientific discovery. Perfect for ages 8-16.</p>
-                            <div class="card-actions">
+                            <div class="event-actions">
                                 <button class="cta-button secondary" onclick="openEventModal('stem-workshop')">Learn More & Register</button>
+                                <div class="calendar-actions">
+                                    <button class="calendar-button" onclick="addToCalendar('ics')">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        Add to Calendar
+                                    </button>
+                                    <div class="calendar-dropdown">
+                                        <button onclick="addToCalendar('ics')">
+                                            <i class="fab fa-windows"></i> Windows / Outlook
+                                        </button>
+                                        <button onclick="addToCalendar('ics')">
+                                            <i class="fab fa-apple"></i> macOS / iOS
+                                        </button>
+                                        <button onclick="addToCalendar('google')">
+                                            <i class="fab fa-google"></i> Google Calendar
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
