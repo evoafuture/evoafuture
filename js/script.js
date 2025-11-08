@@ -757,4 +757,77 @@ function addToCalendar(type) {
     }
 }
 
+// Image Carousel Functionality
+let currentSlideIndex = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const indicators = document.querySelectorAll('.indicator');
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    // Hide all slides
+    slides.forEach(slide => slide.classList.remove('active'));
+    indicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    // Wrap around if necessary
+    if (n >= totalSlides) currentSlideIndex = 0;
+    if (n < 0) currentSlideIndex = totalSlides - 1;
+    
+    // Show current slide
+    const track = document.querySelector('.carousel-track');
+    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    
+    // Update indicators
+    if (slides[currentSlideIndex]) slides[currentSlideIndex].classList.add('active');
+    if (indicators[currentSlideIndex]) indicators[currentSlideIndex].classList.add('active');
+}
+
+function moveCarousel(n) {
+    currentSlideIndex += n;
+    showSlide(currentSlideIndex);
+}
+
+function currentSlide(n) {
+    currentSlideIndex = n - 1;
+    showSlide(currentSlideIndex);
+}
+
+// Auto-play carousel (optional - uncomment to enable)
+// setInterval(() => {
+//     moveCarousel(1);
+// }, 5000);
+
+// Touch/swipe support for mobile
+let startX, endX;
+
+document.querySelector('.carousel-container')?.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+});
+
+document.querySelector('.carousel-container')?.addEventListener('touchend', e => {
+    endX = e.changedTouches[0].clientX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = startX - endX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // Swipe left - next slide
+            moveCarousel(1);
+        } else {
+            // Swipe right - previous slide
+            moveCarousel(-1);
+        }
+    }
+}
+
+// Initialize carousel on page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (slides.length > 0) {
+        showSlide(0);
+    }
+});
+
 console.log('EvoAFuture website with donation system loaded successfully!');
