@@ -385,6 +385,32 @@ section.section-gradient {
     color: white;
 }
 
+.section-card .card-image {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-card .card-image:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.section-card .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.section-card .card-image:hover .card-img {
+    transform: scale(1.05);
+}
+
 /* Program Image Styles */
 .program-image {
     width: 100%;
@@ -894,6 +920,10 @@ section.section-gradient {
     text-align: left !important;
     margin-top: 15px;
     font-size: 1rem;
+}
+
+.registration-info strong {
+    color: #2563eb !important;
 }
 
 .event-actions {

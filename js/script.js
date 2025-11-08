@@ -759,11 +759,23 @@ function addToCalendar(type) {
 
 // Image Carousel Functionality
 let currentSlideIndex = 0;
-const slides = document.querySelectorAll('.carousel-slide');
-const indicators = document.querySelectorAll('.indicator');
-const totalSlides = slides.length;
+let slides, indicators, totalSlides;
+
+function initializeCarousel() {
+    slides = document.querySelectorAll('.carousel-slide');
+    indicators = document.querySelectorAll('.indicator');
+    totalSlides = slides.length;
+    
+    console.log('Initializing carousel:', { slidesFound: slides.length, indicatorsFound: indicators.length });
+    
+    if (slides.length > 0) {
+        showSlide(0);
+    }
+}
 
 function showSlide(n) {
+    if (!slides || slides.length === 0) return;
+    
     // Hide all slides
     slides.forEach(slide => slide.classList.remove('active'));
     indicators.forEach(indicator => indicator.classList.remove('active'));
@@ -774,7 +786,9 @@ function showSlide(n) {
     
     // Show current slide
     const track = document.querySelector('.carousel-track');
-    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    if (track) {
+        track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    }
     
     // Update indicators
     if (slides[currentSlideIndex]) slides[currentSlideIndex].classList.add('active');
@@ -782,14 +796,30 @@ function showSlide(n) {
 }
 
 function moveCarousel(n) {
+    console.log('moveCarousel called with:', n);
+    if (!slides || slides.length === 0) {
+        console.log('No slides found, reinitializing...');
+        initializeCarousel();
+        return;
+    }
     currentSlideIndex += n;
     showSlide(currentSlideIndex);
 }
 
 function currentSlide(n) {
+    console.log('currentSlide called with:', n);
+    if (!slides || slides.length === 0) {
+        console.log('No slides found, reinitializing...');
+        initializeCarousel();
+        return;
+    }
     currentSlideIndex = n - 1;
     showSlide(currentSlideIndex);
 }
+
+// Make functions globally available
+window.moveCarousel = moveCarousel;
+window.currentSlide = currentSlide;
 
 // Auto-play carousel (optional - uncomment to enable)
 // setInterval(() => {
@@ -825,9 +855,7 @@ function handleSwipe() {
 
 // Initialize carousel on page load
 document.addEventListener('DOMContentLoaded', function() {
-    if (slides.length > 0) {
-        showSlide(0);
-    }
+    initializeCarousel();
 });
 
 console.log('EvoAFuture website with donation system loaded successfully!');

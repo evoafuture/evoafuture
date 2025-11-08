@@ -6,6 +6,28 @@
     <title>Friday Morning Hike - EvoAFuture Private Foundation</title>
     <link rel="icon" type="image/png" href="../img/evo_logo_nobg.png">
     <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Custom styles for this page to show full images */
+        .event-image-carousel {
+            aspect-ratio: auto !important;
+            height: auto !important;
+        }
+        
+        .carousel-container {
+            height: auto !important;
+        }
+        
+        .carousel-slide {
+            height: auto !important;
+        }
+        
+        .carousel-slide .event-featured-img {
+            object-fit: contain !important;
+            height: auto !important;
+            max-height: 500px;
+            width: 100%;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -52,13 +74,7 @@
                                     <img src="../img/event_hiking_2025_10_31_crop.png" alt="Friday Morning Hike Group" class="event-featured-img">
                                 </div>
                                 <div class="carousel-slide">
-                                    <img src="../img/event_hiking_location.jpg" alt="Belgatos Park Trail" class="event-featured-img">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img src="../img/event_hiking_group.jpg" alt="Hiking Group at Summit" class="event-featured-img">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img src="../img/event_hiking_scenery.jpg" alt="Beautiful Autumn Scenery" class="event-featured-img">
+                                    <img src="../img/event_hiking_2025_10_31_complete.jpeg" alt="Belgatos Park Trail" class="event-featured-img">
                                 </div>
                             </div>
                             <button class="carousel-btn prev" onclick="moveCarousel(-1)">
@@ -71,8 +87,6 @@
                         <div class="carousel-indicators">
                             <span class="indicator active" onclick="currentSlide(1)"></span>
                             <span class="indicator" onclick="currentSlide(2)"></span>
-                            <span class="indicator" onclick="currentSlide(3)"></span>
-                            <span class="indicator" onclick="currentSlide(4)"></span>
                         </div>
                     </div>
                 </div>
@@ -244,5 +258,56 @@
     </footer>
 
     <script src="../js/script.js"></script>
+    <script>
+        // Simple, direct carousel implementation
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentIndex = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const track = document.querySelector('.carousel-track');
+            
+            console.log('Carousel initialized:', slides.length, 'slides found');
+            
+            function updateCarousel() {
+                // Move track
+                if (track) {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+                
+                // Update slide classes
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentIndex);
+                });
+                
+                // Update indicator classes
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
+                });
+                
+                console.log('Updated to slide:', currentIndex);
+            }
+            
+            // Global functions
+            window.moveCarousel = function(direction) {
+                console.log('moveCarousel called with:', direction);
+                currentIndex += direction;
+                
+                // Wrap around
+                if (currentIndex >= slides.length) currentIndex = 0;
+                if (currentIndex < 0) currentIndex = slides.length - 1;
+                
+                updateCarousel();
+            };
+            
+            window.currentSlide = function(index) {
+                console.log('currentSlide called with:', index);
+                currentIndex = index - 1; // Convert from 1-based to 0-based
+                updateCarousel();
+            };
+            
+            // Initialize
+            updateCarousel();
+        });
+    </script>
 </body>
 </html>
