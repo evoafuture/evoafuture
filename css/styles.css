@@ -337,6 +337,20 @@ section.section-gradient {
     font-size: 1.1rem;
 }
 
+/* Subsection Headers */
+.subsection-header {
+    margin: 40px 0 25px 0;
+    text-align: left;
+}
+
+.subsection-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    border-left: 4px solid #2563eb;
+    padding-left: 15px;
+}
+
 /* Unified Grid System */
 .section-grid {
     display: grid;
