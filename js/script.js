@@ -757,105 +757,129 @@ function addToCalendar(type) {
     }
 }
 
-// Image Carousel Functionality
-let currentSlideIndex = 0;
-let slides, indicators, totalSlides;
+// Image Carousel Functionality - Supporting Multiple Carousels
+const carousels = {};
 
 function initializeCarousel() {
-    slides = document.querySelectorAll('.carousel-slide');
-    indicators = document.querySelectorAll('.indicator');
-    totalSlides = slides.length;
+    const carouselContainers = document.querySelectorAll('[data-carousel]');
     
-    console.log('Initializing carousel:', { slidesFound: slides.length, indicatorsFound: indicators.length });
-    
-    if (slides.length > 0) {
-        showSlide(0);
-    }
+    carouselContainers.forEach(container => {
+        const carouselId = container.getAttribute('data-carousel');
+        const slides = container.querySelectorAll('.carousel-slide');
+        const indicators = container.parentElement.querySelectorAll('.indicator');
+        
+        carousels[carouselId] = {
+            currentSlideIndex: 0,
+            slides: slides,
+            indicators: indicators,
+            totalSlides: slides.length,
+            track: container.querySelector('.carousel-track')
+        };
+        
+        console.log(`Initializing carousel ${carouselId}:`, { 
+            slidesFound: slides.length, 
+            indicatorsFound: indicators.length 
+        });
+        
+        if (slides.length > 0) {
+            showSlide(carouselId, 0);
+        }
+    });
 }
 
-function showSlide(n) {
-    if (!slides || slides.length === 0) return;
+function showSlide(carouselId, n) {
+    const carousel = carousels[carouselId];
+    if (!carousel || !carousel.slides || carousel.slides.length === 0) return;
     
-    // Hide all slides
-    slides.forEach(slide => slide.classList.remove('active'));
-    indicators.forEach(indicator => indicator.classList.remove('active'));
+    // Hide all slides and indicators for this carousel
+    carousel.slides.forEach(slide => slide.classList.remove('active'));
+    carousel.indicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    // Update current index
+    carousel.currentSlideIndex = n;
     
     // Wrap around if necessary
-    if (n >= totalSlides) currentSlideIndex = 0;
-    if (n < 0) currentSlideIndex = totalSlides - 1;
+    if (carousel.currentSlideIndex >= carousel.totalSlides) {
+        carousel.currentSlideIndex = 0;
+    }
+    if (carousel.currentSlideIndex < 0) {
+        carousel.currentSlideIndex = carousel.totalSlides - 1;
+    }
     
     // Show current slide
-    const track = document.querySelector('.carousel-track');
-    if (track) {
-        track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    if (carousel.track) {
+        carousel.track.style.transform = `translateX(-${carousel.currentSlideIndex * 100}%)`;
     }
     
     // Update indicators
-    if (slides[currentSlideIndex]) slides[currentSlideIndex].classList.add('active');
-    if (indicators[currentSlideIndex]) indicators[currentSlideIndex].classList.add('active');
+    if (carousel.slides[carousel.currentSlideIndex]) {
+        carousel.slides[carousel.currentSlideIndex].classList.add('active');
+    }
+    if (carousel.indicators[carousel.currentSlideIndex]) {
+        carousel.indicators[carousel.currentSlideIndex].classList.add('active');
+    }
 }
 
-function moveCarousel(n) {
-    console.log('moveCarousel called with:', n);
-    if (!slides || slides.length === 0) {
-        console.log('No slides found, reinitializing...');
+function moveCarousel(carouselId, n) {
+    console.log('moveCarousel called for carousel', carouselId, 'with:', n);
+    const carousel = carousels[carouselId];
+    if (!carousel || !carousel.slides || carousel.slides.length === 0) {
+        console.log('Carousel not found, reinitializing...');
         initializeCarousel();
         return;
     }
-    currentSlideIndex += n;
-    showSlide(currentSlideIndex);
+    showSlide(carouselId, carousel.currentSlideIndex + n);
 }
 
-function currentSlide(n) {
-    console.log('currentSlide called with:', n);
-    if (!slides || slides.length === 0) {
-        console.log('No slides found, reinitializing...');
+function currentSlide(carouselId, n) {
+    console.log('currentSlide called for carousel', carouselId, 'with:', n);
+    const carousel = carousels[carouselId];
+    if (!carousel || !carousel.slides || carousel.slides.length === 0) {
+        console.log('Carousel not found, reinitializing...');
         initializeCarousel();
         return;
     }
-    currentSlideIndex = n - 1;
-    showSlide(currentSlideIndex);
+    showSlide(carouselId, n - 1);
 }
 
 // Make functions globally available
 window.moveCarousel = moveCarousel;
 window.currentSlide = currentSlide;
 
-// Auto-play carousel (optional - uncomment to enable)
-// setInterval(() => {
-//     moveCarousel(1);
-// }, 5000);
-
-// Touch/swipe support for mobile
-let startX, endX;
-
-document.querySelector('.carousel-container')?.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
+// Touch/swipe support for mobile - applied to all carousels
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCarousel();
+    
+    const carouselContainers = document.querySelectorAll('[data-carousel]');
+    
+    carouselContainers.forEach(container => {
+        const carouselId = container.getAttribute('data-carousel');
+        let startX, endX;
+        
+        container.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+        });
+        
+        container.addEventListener('touchend', e => {
+            endX = e.changedTouches[0].clientX;
+            handleSwipe(carouselId, startX, endX);
+        });
+    });
 });
 
-document.querySelector('.carousel-container')?.addEventListener('touchend', e => {
-    endX = e.changedTouches[0].clientX;
-    handleSwipe();
-});
-
-function handleSwipe() {
+function handleSwipe(carouselId, startX, endX) {
     const swipeThreshold = 50;
     const diff = startX - endX;
     
     if (Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
             // Swipe left - next slide
-            moveCarousel(1);
+            moveCarousel(carouselId, 1);
         } else {
             // Swipe right - previous slide
-            moveCarousel(-1);
+            moveCarousel(carouselId, -1);
         }
     }
 }
-
-// Initialize carousel on page load
-document.addEventListener('DOMContentLoaded', function() {
-    initializeCarousel();
-});
 
 console.log('EvoAFuture website with donation system loaded successfully!');
