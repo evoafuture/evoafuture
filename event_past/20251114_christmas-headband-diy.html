@@ -44,6 +44,67 @@
             display: flex !important;
             align-items: stretch !important;
         }
+
+        .carousel-slide .carousel-video {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+        }
+
+        .video-thumbnail-link {
+            display: block;
+            position: relative;
+            max-height: 500px;
+            width: auto;
+            aspect-ratio: 791 / 1406;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .video-thumbnail-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .video-thumbnail-link:hover .video-play-overlay {
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .video-play-overlay .play-icon {
+            width: 64px;
+            height: 64px;
+            background: #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .video-play-overlay span {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -88,6 +149,17 @@
                     <div class="carousel-container">
                         <div class="carousel-track">
                             <div class="carousel-slide active">
+                                <div class="carousel-video">
+                                    <a href="https://www.youtube.com/watch?v=rVBnjJyIIWs" target="_blank" class="video-thumbnail-link">
+                                        <img src="https://img.youtube.com/vi/rVBnjJyIIWs/hqdefault.jpg" alt="2025/11/14 Pipeline Cleaner Xmas Special Headband Crafting">
+                                        <div class="video-play-overlay">
+                                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                                            <span>Watch on YouTube</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
                                 <img src="../img/20251115/flower1.png" alt="Christmas DIY Workshop" class="event-featured-img">
                             </div>
                             <div class="carousel-slide">
@@ -120,6 +192,7 @@
                         <span class="indicator" onclick="currentSlide(4)"></span>
                         <span class="indicator" onclick="currentSlide(5)"></span>
                         <span class="indicator" onclick="currentSlide(6)"></span>
+                        <span class="indicator" onclick="currentSlide(7)"></span>
                     </div>
                 </div>
 
